@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS Wheels - Login & Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: #f5f6fa;
+            color: #34495e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 1rem 0 0.5rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            background: #2980b9;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #2471a3;
+        }
+
+        .switch {
+            margin-top: 15px;
+        }
+        
+        .switch a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .switch a:hover {
+            text-decoration: underline;
+        }
+
+        .warning {
+            background: #e74c3c;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container" id="loginForm">
+        <h2>Login to TS Wheels</h2>
+        <div class="warning" id="loginWarning">Account not found. Please sign up.</div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter your email" onkeydown="handleEnter(event, 'password')">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter your password" onkeydown="handleEnter(event, 'login')">
+
+        <button onclick="validateForm('login')">Login</button>
+        <p class="switch">Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
+    </div>
+
+    <div class="form-container" id="signupForm" style="display: none;">
+        <h2>Sign Up for TS Wheels</h2>
+        <div class="warning" id="signupWarning">Please fill in all fields.</div>
+        <label for="signupName">Name:</label>
+        <input type="text" id="signupName" placeholder="Enter your name" onkeydown="handleEnter(event, 'signupPhone')">
+
+        <label for="signupPhone">Phone Number:</label>
+        <input type="tel" id="signupPhone" placeholder="Enter your phone number" onkeydown="handleEnter(event, 'signupEmail')">
+
+        <label for="signupEmail">Email:</label>
+        <input type="email" id="signupEmail" placeholder="Enter your email" onkeydown="handleEnter(event, 'signupPassword')">
+
+        <label for="signupPassword">Password:</label>
+        <input type="password" id="signupPassword" placeholder="Enter your password" onkeydown="handleEnter(event, 'signup')">
+
+        <button onclick="validateForm('signup')">Sign Up</button>
+        <p class="switch">Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+    </div>
+
+    <script>
+        // Simulate a database of users for login verification
+        const users = [
+            { email: 'user@example.com', password: 'password123' }, // Example user
+        ];
+
+        function handleEnter(event, nextFieldId) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const nextField = document.getElementById(nextFieldId);
+                if (nextField) {
+                    nextField.focus();
+                } else {
+                    validateForm(nextFieldId);
+                }
+            }
+        }
+
+        function validateForm(type) {
+            let isValid = true;
+            let warningBox;
+
+            if (type === 'login') {
+                let email = document.getElementById("email").value;
+                let password = document.getElementById("password").value;
+                warningBox = document.getElementById("loginWarning");
+
+                // Check if email and password are entered
+                if (!email || !password) {
+                    isValid = false;
+                    warningBox.style.display = "none";
+                }
+
+                if (isValid) {
+                    // Check if the email and password match any user in the database
+                    const user = users.find(u => u.email === email && u.password === password);
+                    if (!user) {
+                        // If login fails, show warning and switch to signup form
+                        warningBox.style.display = "block";
+                        toggleForm(); // Switch to signup form
+                    } else {
+                        // If login is successful
+                        alert('Login Successful!');
+                    }
+                } else {
+                    warningBox.style.display = "none";
+                }
+            } else if (type === 'signup') {
+                let name = document.getElementById("signupName").value;
+                let phone = document.getElementById("signupPhone").value;
+                let email = document.getElementById("signupEmail").value;
+                let password = document.getElementById("signupPassword").value;
+                warningBox = document.getElementById("signupWarning");
+
+                if (!name || !phone || !email || !password) {
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    warningBox.style.display = "block"; // Show the warning
+                } else {
+                    warningBox.style.display = "none"; // Hide the warning if all fields are filled
+                    alert('Sign Up Successful!');
+                }
+            }
+        }
+
+        function toggleForm() {
+            document.getElementById("loginForm").style.display = 
+                document.getElementById("loginForm").style.display === "none" ? "block" : "none";
+            document.getElementById("signupForm").style.display = 
+                document.getElementById("signupForm").style.display === "none" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>

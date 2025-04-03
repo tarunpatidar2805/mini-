@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS Wheels - Vehicle Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: #e74c3c;
+            color: #34495e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        header img {
+            width: 150px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-buttons button {
+            background: #2980b9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .advertisement-banner {
+            background: #f39c12;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .home-images {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .home-images img {
+            width: 30%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .vehicle-selection {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .vehicle-card {
+            background: purple;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: box-shadow 0.4s ease;
+        }
+
+        .vehicle-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .vehicle-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        .choose-option {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .choose-option button {
+            padding: 0.8rem 1.5rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            background: #2980b9;
+            color: white;
+            cursor: pointer;
+        }
+
+        .back-button {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 2rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            color: #27ae60;
+            margin-top: 0.5rem;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #f1c40f;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .vehicle-details {
+            text-align: left;
+            margin-top: 10px;
+            color: #f1c40f;
+            font-size: 0.9rem;
+        }
+
+        .vehicle-details p {
+            margin: 5px 0;
+        }
+
+        .trip-planner {
+            margin-top: 2rem;
+            background-color: #f39c12;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .trip-planner h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .trip-planner input,
+        .trip-planner button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .trip-planner input {
+            width: 48%;
+            display: inline-block;
+            margin-right: 4%;
+        }
+
+        .trip-planner button {
+            background-color: #2980b9;
+            color: white;
+            cursor: pointer;
+        }
+
+        .trip-planner button:hover {
+            background-color: #21618c;
+        }
+
+        .trip-planner-result {
+            margin-top: 20px;
+            background: #2ecc71;
+            padding: 15px;
+            color: white;
+            font-size: 1.1rem;
+            display: none;
+            text-align: center;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://via.placeholder.com/150" alt="TS Wheels Logo">
+            <div class="nav-buttons">
+                <button onclick="window.location.reload()">Home</button>
+                <button onclick="showLoginPage()">Login</button>
+                <button onclick="alert('About Us: TS Wheels - Your Trusted Vehicle Rental Service')">About Us</button>
+            </div>
+        </header>
+
+        <!-- Advertisement Banner -->
+        <div class="advertisement-banner">
+            <h3>Limited Time Offer! Rent a Car Today!</h3>
+            <p>Special discounts available for early bookings.</p>
+            <img src="https://via.placeholder.com/800x300?text=Special+Offer" alt="Advertisement Image">
+        </div>
+
+        <!-- Home Page Images -->
+        <div class="home-images">
+            <img src="https://via.placeholder.com/400x200?text=Explore+Our+Vehicles" alt="Explore Vehicles">
+            <img src="https://via.placeholder.com/400x200?text=Affordable+Rentals" alt="Affordable Rentals">
+            <img src="https://via.placeholder.com/400x200?text=Book+Your+Ride+Today" alt="Book Your Ride Today">
+        </div>
+
+        <!-- Vehicle Type Selection -->
+        <div class="vehicle-selection" id="vehicleSelection">
+            <h2>SELECT VEHICLE</h2>
+            <select id="vehicleType" onchange="loadVehicleCategories()">
+                <option value="TYPE">TYPES</option>
+                <option value="cars">Cars</option>
+                <option value="bikes">Bikes</option>
+            </select>
+        </div>
+
+        <!-- Vehicle Categories Grid -->
+        <div class="vehicle-grid" id="vehicleGrid"></div>
+
+        <!-- Trip Planner Form -->
+        <div class="trip-planner">
+            <h3>Trip Planner Calculator</h3>
+            <input type="number" id="distance" placeholder="Enter distance (km)" />
+            <input type="number" id="fuelEfficiency" placeholder="Enter vehicle mileage (km/l)" />
+            <!-- Fuel Type Dropdown -->
+            <select id="fuelType" onchange="updateFuelCost()">
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Electric">Electric</option>
+            </select>
+            <input type="number" id="fuelCost" placeholder="Fuel cost (₹ per liter)" readonly />
+            <button onclick="calculateTripCost()">Calculate Cost</button>
+            <div class="trip-planner-result" id="tripPlannerResult">
+                Total Trip Cost: ₹<span id="tripCost"></span>
+            </div>
+        </div>
+
+        <!-- Vehicle Booking Options -->
+        <div class="choose-option" id="chooseOption" style="display: none;">
+            <h3>Choose an Option:</h3>
+            <button onclick="confirmChoice('Rent')">Rent</button>
+            <button onclick="confirmChoice('Details')">Details</button>
+        </div>
+
+        <!-- Back Button -->
+        <button class="back-button" id="backButton" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        const categories = {
+            cars: ["SUV", "Sedan", "Hatchback", "Luxury", "Electric Car"],
+            bikes: ["Sports Bike", "Cruiser Bike", "Dirt Bike", "Scooter"]
+        };
+       
+        const vehiData = {
+            "Sports Bike": [
+                { name: 'toyotaMotorcycle', image: 'https://wallpapercave.com/wp/wp1860926.jpg', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' },
+               { name: 'pulsure', image: 'https://wallpapercave.com/wp/wp1860926.jpg', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' }
+            
+            ],
+
+            "Cruiser Bike": [
+                { name: 'Maruti Dzire', image: 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Maruti/Dzire/11387/1731318279714/front-left-side-47.jpg?impolicy=resize&imwidth=360', price: '₹4000/day', mileage: 15, fuel: 'Petrol', engine: '1.6L', seats: '4' },
+                { name: 'Hyundai Verna', image: 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Hyundai/Verna/8703/1736412929424/front-left-side-47.jpg?impolicy=resize&imwidth=360', price: '₹4500/day', mileage: 14, fuel: 'Diesel', engine: '1.8L', seats: '4' }
+            ],
+            "Dirt Bike": [
+                { name: 'Maruti Swift', image: 'https://imgd.aeplcdn.com/227x128/n/cw/ec/159099/swift-exterior-right-front-three-quarter-31.jpeg?isig=0&q=80', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' },
+                { name: 'Hyundai i20', image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/150603/i20-exterior-right-front-three-quarter-7.jpeg?isig=0&q=80', price: '₹5500/day', mileage: 10, fuel: 'Diesel', engine: '2.5L', seats: '5' }
+            ],
+            "Scooter": [
+                { name: 'Land Rover Defender', image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/55215/defender-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' },
+                { name: '', image: 'https://www.carwale.com/bmw-cars/3-series-lwb/', price: '₹5500/day', mileage: 10, fuel: 'Diesel', engine: '2.5L', seats: '5' }
+            ]
+            
+        };
+        const vehicleData = {
+            "SUV": [
+                { name: 'Tata Curvv', image: 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Tata/Curvv/9578/1723033064164/front-left-side-47.jpg?imwidth=420&impolicy=resize', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' },
+                { name: 'Mahindra XUV700', image: 'data:image/jpeg;base64,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', price: '₹5500/day', mileage: 10, fuel: 'Diesel', engine: '2.5L', seats: '5' }
+            ],
+            "Sedan": [
+                { name: 'Maruti Dzire', image: 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Maruti/Dzire/11387/1731318279714/front-left-side-47.jpg?impolicy=resize&imwidth=360', price: '₹4000/day', mileage: 15, fuel: 'Petrol', engine: '1.6L', seats: '4' },
+                { name: 'Hyundai Verna', image: 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Hyundai/Verna/8703/1736412929424/front-left-side-47.jpg?impolicy=resize&imwidth=360', price: '₹4500/day', mileage: 14, fuel: 'Diesel', engine: '1.8L', seats: '4' }
+            ],
+            "Hatchback": [
+                { name: 'Maruti Swift', image: 'https://imgd.aeplcdn.com/227x128/n/cw/ec/159099/swift-exterior-right-front-three-quarter-31.jpeg?isig=0&q=80', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' },
+                { name: 'Hyundai i20', image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/150603/i20-exterior-right-front-three-quarter-7.jpeg?isig=0&q=80', price: '₹5500/day', mileage: 10, fuel: 'Diesel', engine: '2.5L', seats: '5' }
+            ],
+            "Luxury": [
+                { name: 'Land Rover Defender', image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/55215/defender-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' },
+                { name: '', image: 'https://www.carwale.com/bmw-cars/3-series-lwb/', price: '₹5500/day', mileage: 10, fuel: 'Diesel', engine: '2.5L', seats: '5' }
+            ],
+            "Electric Car": [
+                { name: 'Maruti Swift', image: 'https://imgd.aeplcdn.com/227x128/n/cw/ec/159099/swift-exterior-right-front-three-quarter-31.jpeg?isig=0&q=80', price: '₹5000/day', mileage: 12, fuel: 'Petrol', engine: '2.0L', seats: '5' },
+                { name: 'Hyundai i20', image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/150603/i20-exterior-right-front-three-quarter-7.jpeg?isig=0&q=80', price: '₹5500/day', mileage: 10, fuel: 'Diesel', engine: '2.5L', seats: '5' }
+            ],
+        };
+
+        const fuelCostData = {
+            "Petrol": 100,
+            "Diesel": 90,
+            "Electric": 50
+        };
+
+        let currentView = 'vehicleSelection';  
+
+        // Load Vehicle Categories based on selected type
+        function loadVehicleCategories() {
+            const vehicleType = document.getElementById('vehicleType').value;
+            const vehicleGrid = document.getElementById('vehicleGrid');
+            const vehicleSelection = document.getElementById('vehicleSelection');
+            const backButton = document.getElementById('backButton');
+
+            vehicleGrid.innerHTML = ''; 
+            vehicleGrid.style.display = 'grid'; 
+            vehicleSelection.style.display = 'none';
+            backButton.style.display = 'block'; 
+
+            currentView = 'vehicleGrid';
+
+            categories[vehicleType].forEach(category => {
+                const card = document.createElement('div');
+                card.className = 'vehicle-card';
+                card.innerHTML = `<h3>${category}</h3>`;
+                card.addEventListener('click', () => loadVehicles(category));
+                vehicleGrid.appendChild(card);
+            });
+        }
+
+        // Load Vehicles for selected category and show them immediately
+        function loadVehicles(category) {
+            const vehicleGrid = document.getElementById('vehicleGrid');
+            const backButton = document.getElementById('backButton');
+            vehicleGrid.innerHTML = ''; 
+
+            vehicleData[category]?.forEach(vehicle => {
+                const card = document.createElement('div');
+                card.className = 'vehicle-card';
+                card.innerHTML = `
+                    <img src="${vehicle.image}" alt="${vehicle.name}">
+                    <h3>${vehicle.name}</h3>
+                    <p class="price">${vehicle.price}</p>
+                    <div class="vehicle-details">
+                        <p>Mileage: ${vehicle.mileage} km/l</p>
+                        <p>Fuel: ${vehicle.fuel}</p>
+                        <p>Engine: ${vehicle.engine}</p>
+                        <p>Seats: ${vehicle.seats}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => showBookingPage(vehicle));
+                vehicleGrid.appendChild(card);
+            });
+
+            currentView = 'vehicleDetails';
+        }
+
+        // Update fuel cost based on selected fuel type
+        function updateFuelCost() {
+            const fuelType = document.getElementById('fuelType').value;
+            const fuelCostInput = document.getElementById('fuelCost');
+            fuelCostInput.value = fuelCostData[fuelType] || '';
+        }
+
+        // Trip Cost Calculation
+        function calculateTripCost() {
+            const distance = parseFloat(document.getElementById('distance').value);
+            const fuelEfficiency = parseFloat(document.getElementById('fuelEfficiency').value);
+            const fuelCost = parseFloat(document.getElementById('fuelCost').value);
+            const tripCost = (distance / fuelEfficiency) * fuelCost;
+
+            document.getElementById('tripCost').innerText = tripCost.toFixed(2);
+            document.getElementById('tripPlannerResult').style.display = 'block';
+        }
+
+        function showBookingPage(vehicle) {
+            localStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
+            window.location.href = 'booking.html';
+        }
+
+        function goBack() {
+            const vehicleSelection = document.getElementById('vehicleSelection');
+            const vehicleGrid = document.getElementById('vehicleGrid');
+            const backButton = document.getElementById('backButton');
+
+            if (currentView === 'vehicleGrid') {
+                vehicleSelection.style.display = 'block';
+                vehicleGrid.style.display = 'none';
+                backButton.style.display = 'none'; 
+                currentView = 'vehicleSelection';
+            } else if (currentView === 'vehicleDetails') {
+                loadVehicleCategories(); 
+                currentView = 'vehicleGrid';
+            }
+        }
+
+        function showLoginPage() {
+            window.open('login.html', '_blank');
+        }
+    </script>
+</body>
+</html>
